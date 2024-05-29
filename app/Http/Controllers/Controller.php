@@ -6,3 +6,4 @@ abstract class Controller
 {
     //
 }
+//automatic static class
