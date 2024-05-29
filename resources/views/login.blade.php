@@ -3,85 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conferences</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             background-color: #c1aeae; /* Grey background for the entire page */
-            margin: 0; /* Remove default margin */
-        }
-        nav {
-            background-color: #cba21b;
-            padding: 10px;
-        }
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        li {
-            display: inline;
-            margin-right: 10px;
-        }
-        a.btn {
-            width: 100px;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: #a6530e;
-            background-color: #facc73;
-            border-color: #a6530e;
             display: flex;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        a.btn:hover {
-            background-color: #a6530e;
-            color: #000000;
-        }
-        table {
-            width: 100%;
-        }
-        th, td {
-            font-size: 14px;
-        }
-        .container {
-            background-color: #ffffff; /* White background for the container */
+        .login-box {
+            background-color: #cb821b; /* White background for the login box */
             padding: 20px;
-            margin: 20px auto; /* Center the container */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px; /* Optional: limit the max width */
+            width: 100%;
+            max-width: 400px;
+            position: relative; /* To position the close button absolutely within the box */
         }
-        .btn-logout {
-            width: 100px;
-            background-color: #a6530e;
-            color: #000000;
-            border-color: #7c4a0a;
-            display: flex;
-            align-items: center;
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #facc73;
+            color: black;
+            border: none;
         }
     </style>
 </head>
 <body>
-<nav>
-    <ul>
-        @if(auth()->check())
-            <li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline; float: right; margin-top: 5px; margin-right: 10px;">
-                    @csrf
-                    <button type="submit" class="btn btn-logout">Logout</button>
-                </form>
-            </li>
-        @else
-            <li>
-                <a href="{{ route('login') }}" class="btn">Login</a>
-            </li>
+<div class="login-box">
+    <h1 class="text-center mb-4">Login</h1>
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+        </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
-    </ul>
-</nav>
-<div class="container">
-    @yield('content')
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 30px; background-color: #7c4a0a; border-color: #cb821b;">Login</button>
+    </form>
+    <a href="{{ route('conferences.index') }}" class="close-btn"><i class="fas fa-times"></i></a>
 </div>
-<script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
-<link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </body>
 </html>

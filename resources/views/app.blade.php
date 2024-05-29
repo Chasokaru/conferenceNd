@@ -22,6 +22,21 @@
             display: inline;
             margin-right: 10px;
         }
+        .btn, .btn-logout {
+            width: 100px;
+            background-color: #a6530e;
+            color: #000000;
+            border-color: #7c4a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center text horizontally */
+            text-decoration: none; /* Remove underline from links */
+            padding: 5px; /* Add padding for better click area */
+        }
+        .btn:hover, .btn-logout:hover {
+            background-color: #a6530e; /* Same background color on hover */
+            color: #000000; /* Same text color on hover */
+        }
         table {
             width: 100%;
         }
@@ -36,20 +51,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 1200px; /* Optional: limit the max width */
         }
-        .btn-logout, .btn-login {
-            width: 100px;
-            background-color: #a6530e;
-            color: #000000;
-            border-color: #7c4a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center text horizontally */
-            text-decoration: none; /* Remove underline from links */
-            padding: 5px; /* Add padding for better click area */
-        }
-        .btn-logout:hover, .btn-login:hover {
-            background-color: #7c4a0a;
-        }
     </style>
 </head>
 <body>
@@ -57,14 +58,14 @@
     <ul>
         @if(auth()->check())
             <li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline; float: right; margin-top: 5px; margin-right: 10px;">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
-                    <button type="submit" class="btn-logout">Logout</button>
+                    <button type="submit" class="btn btn-logout">Logout</button>
                 </form>
             </li>
         @else
             <li>
-                <a href="{{ route('login') }}" class="btn-login">Login</a>
+                <a href="{{ route('login') }}" class="btn">Login</a>
             </li>
         @endif
     </ul>
