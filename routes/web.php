@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ConferenceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,5 +14,8 @@ Route::get('/conferences/{conference}/edit', [ConferenceController::class, 'edit
 Route::put('/conferences/{conference}/update', [ConferenceController::class, 'update'])->name('conferences.update');
 Route::delete('/conferences/{conference}/delete', [ConferenceController::class, 'destroy'])->name('conferences.destroy');
 
+Route::get('login', [UserController::class, 'showLoginForm'])->name('login');
+Route::post('login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
 

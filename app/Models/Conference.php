@@ -13,9 +13,5 @@ class Conference extends Model
         'address',
         'participants',
     ];
-
-    public static function create(mixed $validated)
-    {
-    }
 }
 

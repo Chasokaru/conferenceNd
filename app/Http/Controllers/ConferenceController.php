@@ -7,35 +7,35 @@ use App\Http\Requests\ConferenceRequest;
 
 class ConferenceController extends Controller
 {
-    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function index()
     {
         $conferences = Conference::all();
         return view('index', compact('conferences'));
     }
 
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function create()
     {
         return view('create');
     }
 
-    public function store(ConferenceRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(ConferenceRequest $request)
     {
         Conference::create($request->validated());
         return redirect()->route('conferences.index')->with('success', 'Conference created successfully!');
     }
 
-    public function edit(Conference $conference): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function edit(Conference $conference)
     {
         return view('edit', compact('conference'));
     }
 
-    public function update(ConferenceRequest $request, Conference $conference): \Illuminate\Http\RedirectResponse
+    public function update(ConferenceRequest $request, Conference $conference)
     {
         $conference->update($request->validated());
         return redirect()->route('conferences.index')->with('success', 'Conference updated successfully!');
     }
 
-    public function destroy(Conference $conference): \Illuminate\Http\RedirectResponse
+    public function destroy(Conference $conference)
     {
         $conference->delete();
         return redirect()->route('conferences.index')->with('success', 'Conference deleted successfully!');

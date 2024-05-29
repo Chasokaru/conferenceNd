@@ -22,6 +22,21 @@
             display: inline;
             margin-right: 10px;
         }
+        a.btn {
+            width: 100px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #a6530e;
+            background-color: #facc73;
+            border-color: #a6530e;
+            display: flex;
+            align-items: center;
+        }
+        a.btn:hover {
+            background-color: #a6530e;
+            color: #000000;
+        }
         table {
             width: 100%;
         }
@@ -36,19 +51,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 1200px; /* Optional: limit the max width */
         }
-        .btn-logout, .btn-login {
+        .btn-logout {
             width: 100px;
             background-color: #a6530e;
             color: #000000;
             border-color: #7c4a0a;
             display: flex;
             align-items: center;
-            justify-content: center; /* Center text horizontally */
-            text-decoration: none; /* Remove underline from links */
-            padding: 5px; /* Add padding for better click area */
-        }
-        .btn-logout:hover, .btn-login:hover {
-            background-color: #7c4a0a;
         }
     </style>
 </head>
@@ -59,12 +68,12 @@
             <li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline; float: right; margin-top: 5px; margin-right: 10px;">
                     @csrf
-                    <button type="submit" class="btn-logout">Logout</button>
+                    <button type="submit" class="btn btn-logout">Logout</button>
                 </form>
             </li>
         @else
             <li>
-                <a href="{{ route('login') }}" class="btn-login">Login</a>
+                <a href="{{ route('login') }}" class="btn">Login</a>
             </li>
         @endif
     </ul>
