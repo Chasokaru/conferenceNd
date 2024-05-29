@@ -22,21 +22,6 @@
             display: inline;
             margin-right: 10px;
         }
-        a.btn {
-            width: 100px;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: #a6530e;
-            background-color: #facc73;
-            border-color: #a6530e;
-            display: flex;
-            align-items: center;
-        }
-        a.btn:hover {
-            background-color: #a6530e;
-            color: #000000;
-        }
         table {
             width: 100%;
         }
@@ -70,10 +55,6 @@
                     @csrf
                     <button type="submit" class="btn btn-logout">Logout</button>
                 </form>
-            </li>
-        @else
-            <li>
-                <a href="{{ route('login') }}" class="btn">Login</a>
             </li>
         @endif
     </ul>
