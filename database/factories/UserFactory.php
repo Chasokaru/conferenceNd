@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => $this->getDefaultPassword(),
             'remember_token' => $this->generateRememberToken(),
+            'roles' => ['user'], // Default role
             'is_suspended' => false, // Default not suspended
         ];
     }
@@ -54,7 +55,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Configure the user with specific attributes.
+     * Modify the user's attributes based on specific conditions.
      *
      * @param array<string, mixed> $options
      * @return static
@@ -63,9 +64,22 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => $options['verified'] ?? $attributes['email_verified_at'],
+            'roles' => $this->mergeRoles($attributes['roles'] ?? [], $options['roles'] ?? []),
             'is_suspended' => $options['is_suspended'] ?? $attributes['is_suspended'],
             'email' => $this->generateEmail($attributes['email'], $options['email_domain'] ?? null),
         ]);
+    }
+
+    /**
+     * Merge default roles with additional roles.
+     *
+     * @param array $existingRoles
+     * @param array $newRoles
+     * @return array
+     */
+    protected function mergeRoles(array $existingRoles, array $newRoles): array
+    {
+        return array_values(array_unique(array_merge($existingRoles, $newRoles)));
     }
 
     /**

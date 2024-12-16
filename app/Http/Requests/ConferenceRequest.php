@@ -12,7 +12,7 @@ class ConferenceRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         // Log the authorization check
         Log::info('Authorization check for ConferenceRequest.', [
