@@ -8,7 +8,7 @@ use App\Models\User;
 
 class UserSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         User::truncate();
 

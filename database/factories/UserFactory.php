@@ -14,7 +14,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -24,21 +24,63 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'password' => $this->getDefaultPassword(),
+            'remember_token' => $this->generateRememberToken(),
+            'is_suspended' => false, // Default not suspended
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Get the default hashed password.
+     *
+     * @return string
      */
-    public function unverified(): static
+    protected function getDefaultPassword(): string
+    {
+        return static::$password ??= Hash::make(config('app.default_user_password', 'password'));
+    }
+
+    /**
+     * Generate a random remember token.
+     *
+     * @return string
+     */
+    protected function generateRememberToken(): string
+    {
+        return Str::random(random_int(8, 16));
+    }
+
+    /**
+     * Configure the user with specific attributes.
+     *
+     * @param array<string, mixed> $options
+     * @return static
+     */
+    public function configureUser(array $options = []): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'email_verified_at' => $options['verified'] ?? $attributes['email_verified_at'],
+            'is_suspended' => $options['is_suspended'] ?? $attributes['is_suspended'],
+            'email' => $this->generateEmail($attributes['email'], $options['email_domain'] ?? null),
         ]);
+    }
+
+    /**
+     * Generate a custom email if a domain is provided.
+     *
+     * @param string $currentEmail
+     * @param string|null $domain
+     * @return string
+     */
+    protected function generateEmail(string $currentEmail, ?string $domain): string
+    {
+        if ($domain) {
+            $username = explode('@', $currentEmail)[0];
+            return "{$username}@{$domain}";
+        }
+        return $currentEmail;
     }
 }

@@ -1,0 +1,35 @@
+# Set the analysis level (0-8)
+parameters:
+    level: 8
+
+    # Directories or files to analyze
+    paths:
+        - src/
+        - app/
+
+    # Files or directories to exclude
+    excludePaths:
+        - tests/
+        - vendor/
+        - src/legacy(?)
+
+    # Enable strict checks
+    checkMissingTypehints: true
+    checkUninitializedProperties: true
+
+    # Optional: Enable reporting of deprecated PHP features
+    reportDeprecatedPhp: true
+
+    # Error format for output
+    errorFormat: json
+
+    # Files to scan (optional, usually for bootstrapping)
+    scanFiles:
+        - bootstrap.php
+
+# Includes for PHPStan extensions or additional rules
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+# Baseline file to exclude errors (optional)
+baseline: phpstan-baseline.neon

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="MyProject">
+    <description>My custom PHP coding standard</description>
+
+    <!-- Define the coding standards to use (PSR-12, Squiz, etc.) -->
+    <rule ref="PSR12"/>
+
+    <!-- Define Complexity rules -->
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <property name="complexity" value="10"/>
+    </rule>
+
+    <!-- Set Complexity thresholds -->
+    <rule ref="Generic.PHP.CyclomaticComplexity">
+        <property name="complexity" value="10"/>
+    </rule>
+</ruleset>
+    <!-- phpcs C:\Users\danie\Downloads\danielius_sepkus_prif21_2\conferenceND
+    composer require - -dev mglaman/phpstan-cognitive-complexity
+    vendor/bin/pdepend - -summary-xml=/app/summary.xml app/Http/Controllers/ConferenceController.php
+-->
+
