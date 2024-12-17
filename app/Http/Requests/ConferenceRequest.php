@@ -28,7 +28,7 @@ class ConferenceRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         // Log the application of validation rules
         Log::info('Applying validation rules for ConferenceRequest.', $this->all());
@@ -47,7 +47,7 @@ class ConferenceRequest extends FormRequest
      *
      * @return array
      */
-    public function messages(): array
+    public function messages()
     {
         // Log the error message customization
         Log::info('Customizing error messages for ConferenceRequest validation.');
@@ -68,7 +68,7 @@ class ConferenceRequest extends FormRequest
     /**
      * Prepare the data for validation.
      */
-    protected function prepareForValidation(): void
+    protected function prepareForValidation()
     {
         // Log the preparation of input data
         Log::info('Preparing data for ConferenceRequest validation.', $this->all());

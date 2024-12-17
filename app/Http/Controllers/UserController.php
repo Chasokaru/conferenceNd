@@ -5,23 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
     /**
      * Show the login form.
      *
-     * @return View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function showLoginForm(): View
+    public function showLoginForm()
     {
         // Log when the login form is accessed
         Log::info('Login form accessed by a user.');
 
         // Return the login view with additional hints or tips
-        return view('login', [
+        return view('.login', [
             'instructions' => 'Enter your username and password to log in.',
         ]);
     }
@@ -29,10 +27,10 @@ class UserController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request): RedirectResponse
+    public function login(Request $request)
     {
         // Validate the input fields
         $request->validate([
@@ -69,10 +67,10 @@ class UserController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request)
     {
         // Log the logout action
         Log::info('User logged out.', ['username' => Auth::user()->username ?? 'Guest']);
