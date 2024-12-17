@@ -6,121 +6,139 @@ use App\Models\Conference;
 use App\Http\Requests\ConferenceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ConferenceController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the conferences.
+     *
+     * @param Request $request
+     * @return View|RedirectResponse
+     */
+    public function index(Request $request): View|RedirectResponse
     {
-        // Log the retrieval process for debugging
         Log::info('Fetching all conferences for display.');
 
-        // Fetch all conferences with additional sorting by date
-        $conferences = Conference::orderBy('date', 'asc')->paginate(10);
+        $sortField = $request->get('sortField', 'date');
+        $sortDirection = $request->get('sortDirection', 'asc');
 
-        // Include a count of total conferences for statistical purposes
-        $totalConferences = $conferences->count();
+        // Validate sorting parameters
+        if (!in_array($sortField, ['date', 'title']) || !in_array($sortDirection, ['asc', 'desc'])) {
+            return redirect()->route('conferences.index')->withErrors('Invalid sorting parameters.');
+        }
 
-        // Log the number of retrieved conferences
+        $conferences = Conference::orderBy($sortField, $sortDirection)->paginate(10);
+        $totalConferences = $conferences->total();
+
         Log::info("Total conferences retrieved: {$totalConferences}");
+        Log::info("Sorting by: {$sortField} in {$sortDirection} order.");
 
-        // Return a view with extra data like total conferences
         return view('index', [
             'conferences' => $conferences,
             'totalConferences' => $totalConferences,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection,
         ]);
     }
 
-    public function create()
+    /**
+     * Show the form for creating a new conference.
+     *
+     * @return View
+     */
+    public function create(): View
     {
-        // Log the creation form view
         Log::info('Loading the conference creation form.');
 
-        // Return the creation form view with potential hints or guidelines
         return view('create', [
             'instructions' => 'Please ensure all required fields are filled correctly.',
         ]);
     }
 
-    public function store(ConferenceRequest $request)
+    /**
+     * Store a newly created conference in storage.
+     *
+     * @param ConferenceRequest $request
+     * @return RedirectResponse
+     */
+    public function store(ConferenceRequest $request): RedirectResponse
     {
-        // Log the incoming data for debugging
         Log::info('Processing conference creation.', $request->all());
 
-        // Validate and create a new conference with a success flag
         try {
             $conference = Conference::create($request->validated());
-
-            // Log success
             Log::info("Conference created successfully with ID: {$conference->id}");
 
-            // Redirect with a success message
             return redirect()->route('conferences.index')
                 ->with('success', 'Conference created successfully!');
         } catch (\Exception $e) {
-            // Log any errors that occur during creation
             Log::error('Error creating conference:', ['error' => $e->getMessage()]);
 
-            // Redirect back with an error message
             return redirect()->back()->withErrors('Failed to create conference.');
         }
     }
 
-    public function edit(Conference $conference)
+    /**
+     * Show the form for editing the specified conference.
+     *
+     * @param Conference $conference
+     * @return View
+     */
+    public function edit(Conference $conference): View
     {
-        // Log the conference being edited
         Log::info("Editing conference with ID: {$conference->id}");
 
-        // Load the edit view with the conference data and additional metadata
         return view('edit', [
             'conference' => $conference,
             'lastEdited' => now(),
         ]);
     }
 
-    public function update(ConferenceRequest $request, Conference $conference)
+    /**
+     * Update the specified conference in storage.
+     *
+     * @param ConferenceRequest $request
+     * @param Conference $conference
+     * @return RedirectResponse
+     */
+    public function update(ConferenceRequest $request, Conference $conference): RedirectResponse
     {
-        // Log the update request
         Log::info("Updating conference with ID: {$conference->id}", $request->all());
 
-        // Attempt to update the conference
         try {
             $conference->update($request->validated());
-
-            // Log success
             Log::info("Conference updated successfully with ID: {$conference->id}");
 
-            // Redirect with success message
             return redirect()->route('conferences.index')
                 ->with('success', 'Conference updated successfully!');
         } catch (\Exception $e) {
-            // Log any errors
             Log::error('Error updating conference:', ['error' => $e->getMessage()]);
 
-            // Redirect back with an error message
             return redirect()->back()->withErrors('Failed to update conference.');
         }
     }
 
-    public function destroy(Conference $conference)
+    /**
+     * Remove the specified conference from storage.
+     *
+     * @param Conference $conference
+     * @return RedirectResponse
+     */
+    public function destroy(Conference $conference): RedirectResponse
     {
-        // Log the delete request
         Log::info("Deleting conference with ID: {$conference->id}");
 
         try {
-            // Attempt to delete the conference
             $conference->delete();
-
-            // Log success
             Log::info("Conference deleted successfully with ID: {$conference->id}");
 
-            // Redirect with success message
             return redirect()->route('conferences.index')
                 ->with('success', 'Conference deleted successfully!');
         } catch (\Exception $e) {
-            // Log any errors
             Log::error('Error deleting conference:', ['error' => $e->getMessage()]);
 
-            // Redirect back with an error message
             return redirect()->back()->withErrors('Failed to delete conference.');
         }
     }
